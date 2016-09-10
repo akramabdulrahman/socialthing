@@ -13,14 +13,17 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('posts');
+
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
+            $table->longText('content');
+
             //each user hasMany posts
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade');
 
-            $table->string('content');
             $table->timestamps();
         });
     }

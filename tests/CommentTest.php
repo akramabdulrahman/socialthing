@@ -11,8 +11,10 @@ class CommentTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testEach_Comment_can_have_replies()
     {
         $this->assertTrue(true);
     }
+
+
 }

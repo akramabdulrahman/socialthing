@@ -13,14 +13,18 @@ class CreateMediaTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('media');
+
         Schema::create('media', function (Blueprint $table) {
             $table->increments('id');
             $table->string('url');
-            $table->string('mediaType');
+            $table->string('media_type');
+
             //each post hasMany medias
-            $table->integer('post_id')->unsigned();
+            $table->integer('post_id')->unsigned()->nullable();
             $table->foreign('post_id')->references('id')->on('posts')
                 ->onDelete('SET NULL');
+
             $table->timestamps();
         });
     }
