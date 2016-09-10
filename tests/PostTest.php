@@ -11,8 +11,7 @@ class PostTest extends TestCase
 
     protected static $user;
     protected static $posts;
-    protected static $post;
-    protected static $media;
+
 
     public function setUp()
     {
@@ -22,12 +21,19 @@ class PostTest extends TestCase
 
         if (is_null(self::$user)) {
             self::$user = factory(App\User::class, 1)->create();
-            self::$posts = factory(\App\Models\Social\Post::class, 6)->create();
-            self::$post = self::$posts[1];
-            self::$media =  factory(App\Models\Media::class, 'image', 3)->create();
-            foreach(self::$media as $m){
-                $m->post()->associate(self::$post)->save();
-            }
+            self::$posts = factory(\App\Models\Social\Post::class, 6)->create()->each(function ($p) {
+                factory(\App\Models\Media::class, 'image', 10)->make()->each(function ($m) use ($p) {
+                    $p->media()->save($m);
+                });
+                factory(\App\Models\Media::class, 'video', 10)->make()->each(function ($m) use ($p) {
+                    $p->media()->save($m);
+                });
+                factory(\App\Models\Social\Comment::class, 10)->make()->each(function ($c) use ($p) {
+                    $p->comments()->save($c);
+                });
+            });
+
+
 
         }
     }
@@ -49,21 +55,38 @@ class PostTest extends TestCase
 
     public function testPhoto_Posts()
     {
-        self::assertEquals(3,self::$media->count());
-        self::assertEquals(self::$post->id,
-           self::$media[0]->post_id);
-
-        self::assertEquals(3, self::$posts[1]->media()->get()->count());
-
+        $posts = \App\Models\Social\Post::with('media')->get();
+        foreach ($posts as $p) {
+            self::assertNotEmpty($p->toArray());
+            self::assertInstanceOf(Post::class, $p);
+            self::assertNotEmpty($p->media);
+            self::assertNotEmpty($p->image);
+            self::assertInstanceOf(\App\Models\Media::class, $p->image);
+        }
     }
 
     public function testVideo_Posts()
     {
-
+        $posts = \App\Models\Social\Post::with('media')->get();
+        foreach ($posts as $p) {
+            self::assertNotEmpty($p->toArray());
+            self::assertInstanceOf(Post::class, $p);
+            self::assertNotEmpty($p->media);
+            self::assertNotEmpty($p->video);
+            self::assertInstanceOf(\App\Models\Media::class, $p->video);
+        }
     }
 
     public function testEach_Post_has_comments()
     {
+        $posts = Post::with('comments')->get();
+        foreach ($posts as $p) {
+            self::assertNotEmpty($p->toArray());
+            self::assertInstanceOf(Post::class, $p);
+            self::assertNotEmpty($p->comments);
 
+            self::assertInstanceOf(\App\Models\Social\Comment::class, $p->comments);
+            self::assertInstanceOf(\App\Models\Social\Post::class, $p->comments[0]->commentable());
+        }
     }
 }

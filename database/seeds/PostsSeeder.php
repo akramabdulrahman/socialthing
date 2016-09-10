@@ -11,8 +11,13 @@ class PostsSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Social\Post::class, 10)->create()->each(function($s) {
-            $s->save();
+        factory(\App\Models\Social\Post::class, 6)->create()->each(function ($p) {
+            factory(\App\Models\Media::class, 'image', 10)->make()->each(function ($m) use ($p) {
+                $p->media()->save($m);
+            });
+            factory(\App\Models\Media::class, 'video', 10)->make()->each(function ($m) use ($p) {
+                $p->media()->save($m);
+            });
         });
     }
 }

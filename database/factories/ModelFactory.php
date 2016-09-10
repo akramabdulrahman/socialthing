@@ -30,11 +30,19 @@ $factory->define(App\Models\Social\Post::class, function (Faker\Generator $faker
     ];
 });
 
+$factory->define(App\Models\Social\Comment::class, function (Faker\Generator $faker) {
+
+    return [
+        'content' => $faker->paragraph,
+        'user_id' => 1,
+    ];
+});
+
 $factory->define(App\Models\Media::class, function (Faker\Generator $faker) {
 
     return [
         'url' => $faker->url,
-        'post_id'=>2
+        'post_id'=>$faker->numberBetween(1,6)
     ];
 });
 
@@ -43,5 +51,13 @@ $factory->defineAs(App\Models\Media::class, 'image', function (Faker\Generator $
 
     return array_merge($media, [
         'media_type'=>'image'//$faker->randomElement(array('image','video'))
+    ]);
+});
+
+$factory->defineAs(App\Models\Media::class, 'video', function (Faker\Generator $faker) use ($factory) {
+    $media = $factory->raw(App\Models\Media::class);
+
+    return array_merge($media, [
+        'media_type'=>'video'//$faker->randomElement(array('image','video'))
     ]);
 });

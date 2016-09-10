@@ -19,7 +19,7 @@ class Post extends Model
 
     public function media()
     {
-        return Media::where('post_id','=',$this->id);
+        return $this->hasMany(Media::class);
     }
 
     public function getImageAttribute()

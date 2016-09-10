@@ -18,3 +18,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/test', function () {
+    $posts = \App\Models\Social\Post::with('media')->get();
+    dd($posts->toArray());
+
+});

@@ -9,9 +9,10 @@ class mediaSeeder extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
-        factory(\App\Models\Media::class, 1)->create()->each(function($s) {
+        factory(\App\Models\Media::class,'image', 10)->create()->each(function($s) {
             $s->save();
         });;
 
