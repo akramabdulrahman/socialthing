@@ -19,27 +19,6 @@ class CommentTest extends TestCase
         parent::setUp();
 
         $this->runDatabaseMigrations();
-
-        if (is_null(self::$user)) {
-            self::$user = factory(App\User::class, 1)->create();
-            self::$posts = factory(\App\Models\Social\Post::class, 6)->create()->each(function ($p) {
-                factory(\App\Models\Media::class, 'image', 10)->make()->each(function ($m) use ($p) {
-                    $p->media()->save($m);
-                });
-                factory(\App\Models\Media::class, 'video', 10)->make()->each(function ($m) use ($p) {
-                    $p->media()->save($m);
-                });
-                factory(\App\Models\Social\Comment::class, 10)->make()->each(function ($c) use ($p) {
-                    $p->comments()->save($c);
-                    factory(\App\Models\Social\Comment::class,10)->make()->each(function($r) use ($c){
-                        $c->replies()->save($r);
-                    });
-                });
-            });
-
-
-
-        }
     }
 
     /**
@@ -49,6 +28,18 @@ class CommentTest extends TestCase
      */
     public function testEach_Comment_can_have_replies()
     {
+
+        self::$user = factory(App\User::class, 1)->create();
+        $post = factory(\App\Models\Social\Post::class, 1)->create();
+        factory(\App\Models\Social\Comment::class, 10)->make()->each(function ($c) use ($post) {
+            $post->comments()->save($c);
+            factory(\App\Models\Social\Comment::class,10)->make()->each(function($r) use ($c){
+                $c->replies()->save($r);
+            });
+        });
+
+
+
         $post =  \App\Models\Social\Post::first();
         $commentsOnPost = $post->comments()->get();
 
