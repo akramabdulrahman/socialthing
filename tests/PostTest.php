@@ -72,22 +72,5 @@ class PostTest extends TestCase
         }
     }
 
-    public function testEach_Post_has_comments()
-    {
-        self::$user = factory(App\User::class, 1)->create();
-        $post = factory(\App\Models\Social\Post::class, 1)->create();
-        $comments = factory(\App\Models\Social\Comment::class, 10)->make()->each(function ($c) use ($post){
-                $post->comments()->save($c);
-        });
 
-        $posts = Post::with('comments')->get();
-        foreach ($posts as $p) {
-            self::assertNotEmpty($p->toArray());
-            self::assertInstanceOf(Post::class, $p);
-            self::assertNotEmpty($p->comments);
-
-            self::assertInstanceOf(\App\Models\Social\Comment::class, $p->comments[0]);
-            self::assertInstanceOf(\App\Models\Social\Post::class, $p->comments[0]->commentable()->first());
-        }
-    }
 }
