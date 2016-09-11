@@ -10,6 +10,7 @@ class Media extends Model
     const  IMAGE = "image";
     const  VIDEO = "video";
 
+    protected $fillable = ['url','media_type'];
 
     public function post()
     {

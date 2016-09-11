@@ -18,6 +18,12 @@ class PostsSeeder extends Seeder
             factory(\App\Models\Media::class, 'video', 10)->make()->each(function ($m) use ($p) {
                 $p->media()->save($m);
             });
+            factory(\App\Models\Social\Comment::class, 10)->make()->each(function ($c) use ($p) {
+                $p->comments()->save($c);
+                factory(\App\Models\Social\Comment::class,10)->make()->each(function($r) use ($c){
+                    $c->replies()->save($r);
+                });
+            });
         });
     }
 }
