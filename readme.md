@@ -1,6 +1,6 @@
 #ALL INITIAL TESTS HAS BEEN MET , 
 ##composer install ,
- ##make .env file ,
+##make .env file ,
 ##configure phpunit in php storm ,
 ## run each test (it will glow green),
   ##now go run 
