@@ -32,7 +32,6 @@
                                         @include('media.image',['image'=>$post->image[0]])
                                     @endif
                                     @if(isset($post->video[0]))
-
                                         @include('media.video',['video'=>$post->video[0]])
                                     @endif
                                 </div>

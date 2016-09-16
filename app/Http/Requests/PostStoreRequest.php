@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Auth;
+
 class PostStoreRequest extends FormRequest
 {
     /**
@@ -23,7 +24,8 @@ class PostStoreRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+
+        return is_null($this->input('image')) ? [] : [
             'image' => 'required|image'
         ];
     }

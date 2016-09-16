@@ -53,9 +53,11 @@ class UserTimeLineController extends Controller
         $input = $request->except('_token');
         $input['user_id'] = Auth::user()->id;
         $post = Post::create(($input));
+        if (!is_null($request->input('image'))) {
+            $post->image = $this->upload_file(['filename' => 'image'], $request);
+            $post->video = $input['video'];
+        }
 
-        $post->image = $this->upload_file(['filename' => 'image'], $request);
-        $post->video = $input['video'];
         return redirect()->back();
     }
 

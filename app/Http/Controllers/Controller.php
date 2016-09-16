@@ -15,10 +15,13 @@ class Controller extends BaseController
 
     protected function upload_file(array $options, Request $request)
     {
+
         $opts = [
             'filename' => 'file',
             'prefix' => 'image'
         ];
+
+
         $opts = array_merge($opts, $options);
         $localpath = '/public/';
 
