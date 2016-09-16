@@ -16,11 +16,15 @@
                             <header class="text-left">
                                 <div class="comment-user"><i class="fa fa-user"></i> {{$post->user()->first()->name}}
                                 </div>
-                                <time class="comment-date" datetime="{{$post->created_at}}"><i
-                                            class="fa fa-clock-o"></i>Created {{$post->created_at->diffForHumans()}}</time>
+                                <a href="{{route('posts.show',$post->id)}}">
+                                    <time class="comment-date" datetime="{{$post->created_at}}"><i
+                                                class="fa fa-clock-o"></i>Created {{$post->created_at->diffForHumans()}}
+                                    </time>
 
-                                <time class="comment-date" datetime="{{$post->updated_at}}"><i
-                                            class="fa fa-clock-o"></i>Updated {{$post->updated_at->diffForHumans()}}</time>
+                                    <time class="comment-date" datetime="{{$post->updated_at}}"><i
+                                                class="fa fa-clock-o"></i>Updated {{$post->updated_at->diffForHumans()}}
+                                    </time>
+                                </a>
                             </header>
                             <div class="comment-post">
                                 <div class="row">

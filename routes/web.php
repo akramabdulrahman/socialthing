@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::resource('posts','UserTimeLineController');
 Route::get('/home', 'UserTimeLineController@index');
 Route::post('/comments/', 'UserTimeLineController@storeOnPost')->name('comment_on_post');
 Route::post('/comments/reply', 'UserTimeLineController@storeOnComment')->name('comment_on_comment');

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Auth;
+use App\Http\Requests\PostStoreRequest;
 
 class UserTimeLineController extends Controller
 {
@@ -46,13 +47,15 @@ class UserTimeLineController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostStoreRequest $request)
     {
+
         $input = $request->except('_token');
-        $input['user_id']=Auth::user()->id;
+        $input['user_id'] = Auth::user()->id;
         $post = Post::create(($input));
-        $post->image=$input['image'];
-        $post->video=$input['video'];
+
+        $post->image = $this->upload_file(['filename' => 'image'], $request);
+        $post->video = $input['video'];
         return redirect()->back();
     }
 
@@ -100,7 +103,8 @@ class UserTimeLineController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('post')->with(['post' => $post]);
     }
 
     /**
